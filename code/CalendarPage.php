@@ -5,23 +5,30 @@ class CalendarPage extends Page {
 		'DisplayType' => 'Enum("List,Calendar","List")',
 		);
 
+	static $defaults = array(
+		'DisplayType' => 'List',
+	);
+
 	function getCMSFields() {
 		$f = parent::getCMSFields();
-		$f->addFieldToTab('Root.Content.CalendarOptions', new DropdownField('DisplayType','How do you want to display your events?', array('List' => 'List','Calendar'=>'Calendar')));
-		$eventDOM = new DataObjectManager(
-			$this,
+		$f->addFieldToTab('Root.CalendarOptions', new DropdownField('DisplayType','How do you want to display your events?', array('List' => 'List','Calendar'=>'Calendar')));
+		$eventConfig = GridFieldConfig_RecordEditor::create();
+		$cols = $eventConfig->getComponentByType('GridFieldDataColumns');
+		//$eventConfig->addComponent($cols = new GridFieldDataColumns());
+		//$eventConfig->addComponent(new GridFieldDeleteButton());
+		$eventDOM = new GridField(
 			'Events',
-			'Event',
-			array(
-				'Title' => 'Title',
-				'Location' => 'Location',
-				'StartTime' => 'Time',
-				'Source' => 'Source'
-			),
-			''
-			//"Status = 'Active'"
+			'Events',
+			DataObject::get('Event'),
+			$eventConfig
 		);
-		$f->addFieldToTab('Root.Content.Events',$eventDOM);
+		$cols->setDisplayFields(array(
+			'Title' => 'Title',
+			'Location' => 'Location',
+			'StartTime' => 'Time',
+			'Source' => 'Source'
+		));//*/
+		$f->addFieldToTab('Root.Events',$eventDOM);//*/
 		return $f;
 	}
 }
@@ -39,10 +46,10 @@ class CalendarPage_Controller extends Page_Controller {
 		}
 		Event::update_all($sc,$gcal);
 		if($this->DisplayType == 'Calendar') {
-			Requirements::css('Calendar/css/fullcalendar.css');
+			Requirements::css('calendar/css/fullcalendar.css');
 			Requirements::themedCSS('events');
-			Requirements::javascript('http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js');
-			Requirements::javascript('Calendar/javascript/fullcalendar.min.js');
+			Requirements::javascript('http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js');
+			Requirements::javascript('calendar/javascript/fullcalendar.min.js');
 			Requirements::customScript(
 				'(function($) {
 					$content = $(\'#content\');
@@ -57,8 +64,6 @@ class CalendarPage_Controller extends Page_Controller {
 							prev: \'&nbsp;&nbsp;\',
 							next: \'|&nbsp;&nbsp;\'
 						},
-						viewDisplay: function() { Cufon.refresh(); $(\'th.fc-sat\').width(\'102px\'); },
-						eventAfterRender: function() { Cufon.refresh(); },
 						events: "'.$this->AjaxEventsLink.'",
 						eventClick: function(event,js,view) {
 							pgY = js.pageY - js.clientY;
@@ -69,27 +74,23 @@ class CalendarPage_Controller extends Page_Controller {
 							}
 							$.get(event.url, function(data) {
 								$eventPopup.css(\'marginTop\',popY + \'px\').children(\'#eventinfo\').html(data).end().fadeIn();
-								Cufon.refresh();
 							});
 							return false;
 						}
 					});
-					Cufon.replace("#eventpopup h4, #eventinfo .time, .fc-header-title, .fc-view th",{fontFamily: "DINSchriftMitAlt"});
-					Cufon.replace(".fc-button-today span, .fc-event-title",{fontFamily: "DIN"});
-					Cufon.replace("#eventinfo .aspecttitle", {fontFamily:"DinAlt"});
 				})(jQuery);'
 				);
 		}
-		Requirements::css('Calendar/css/CalendarPage.css');
+		Requirements::css('calendar/css/CalendarPage.css');
 		parent::init();
 	}
 
 	function getUpcomingEvents($limit = 10) {
-		return Event::getUpcomingEvents($limit);
+		return Event::get_upcoming_events($limit);
 	}
 
 	function getDatedEvents($start = null, $end = null) {
-		return Event::getDatedEvents($start,$end);
+		return Event::get_dated_events($start,$end);
 	}
 
 	function feed() {

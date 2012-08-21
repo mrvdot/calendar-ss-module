@@ -2,7 +2,7 @@
 
 Class Event extends DataObject implements PermissionProvider {
 	static $db = array(
-		'Visibility' => 'Enum("Public,Private","Private")',
+		'Visibility' => 'Enum("Public,Private","Public")',
 		'Title' => 'Varchar(255)',
 		'Location' => 'Varchar(255)',
 		'Address' => 'Text',
@@ -17,11 +17,12 @@ Class Event extends DataObject implements PermissionProvider {
 		'URLSegment' => 'Varchar(255)',
 	);
 
-	static $has_one = array(
-		'Aspect' => 'AspectPage',
-	);
-
 	static $default_sort = 'StartTime ASC, EndTime ASC';
+
+	static $defaults = array(
+		'Visiblity' => 'Public',
+		'Status' => 'Active',
+	);
 
 	function providePermissions() {
 		return array(
@@ -101,17 +102,17 @@ Class Event extends DataObject implements PermissionProvider {
 		return;
 	}
 
-	static function getUpcomingEvents($limit = null) {
+	static function get_upcoming_events($limit = null) {
 		$query = "Status = 'Active'";
 		$sc = SiteConfig::current_site_config();
 		if(!$sc->UseGCal) {
 			$query .= " AND Source != 'Google'";
 		}
 		$events = DataObject::get('Event',$query,'','',$limit);
-		return $events ? $events : false;
+		return $events;
 	}
 
-	static function getDatedEvents($start = null, $end = null) {
+	function get_dated_events($start = null, $end = null) {
 		if(!$start) {
 			$start = SS_Datetime::now()->Format('Y-m-d H:i:s');
 		}
@@ -158,8 +159,6 @@ Class Event extends DataObject implements PermissionProvider {
 		$f->removeByName('URLSegment');
 		//$f->replaceField('StartTime',new DatePickerField('StartTime','Start Time'));
 		//$f->replaceField('EndTime',new DatePickerField('EndTime','End Time'));
-		$desField = new SimpleHTMLEditorField('Description');
-		$f->replaceField('Description',$desField);
 		return $f;
 	}//*/
 
@@ -207,13 +206,6 @@ Class Event extends DataObject implements PermissionProvider {
 		return $time;
 	}
 
-	function getAspectThumbnail() {
-		$aspect = $this->Aspect();
-		if(!$aspect || !$aspect->Icon()) return false;
-		$icon = $aspect->Icon();
-		return $icon->SetRatioSize(75,75);
-	}
-
 	function Link() {
 		$cp = DataObject::get_one('CalendarPage');
 		return Controller::join_links($cp->Link(),'event',$this->URLSegment);
@@ -226,7 +218,7 @@ Class Event extends DataObject implements PermissionProvider {
 			$date = '';
 		}
 		$segment = $this->Title .'-'.$date;
-		$url = MVD::generateURLCode($segment);
+		$url = singleton('SiteTree')->generateURLSegment($segment);
 		$this->URLSegment = $url;
 		parent::onBeforeWrite();
 	}

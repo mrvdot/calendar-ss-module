@@ -1,3 +1,3 @@
 <?php
 
-Object::add_extension('SiteConfig','GoogleCalendarData');
+//Object::add_extension('SiteConfig','GoogleCalendarData');
