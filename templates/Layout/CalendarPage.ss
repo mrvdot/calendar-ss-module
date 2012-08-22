@@ -9,11 +9,12 @@
 		<% if $UpcomingEvents %>
 			<% loop $UpcomingEvents %>
 			<span class="event"><h3>$Title</h3>
-				<p><% if Location %>At $Location, <% end_if %>$StartTime.ShortMonth $StartTime.DayOfMonth from $StartTime.Time until $EndTime.Time<br />
-				<% if Description %>
+				<p><% if Location %>At $Location, <% end_if %>$FormattedTime<br />
+					<% if Description %>
 					{$Description.Summary}<br />
-				<% end_if %>
-				<% if Details %> | <a href="$Link" target="blank">See details</a><% end_if %></p>
+					<% end_if %>
+					<% if Details %> | <a href="$Link" target="blank">See details</a><% end_if %>
+				</p>
 			</span>
 			<% end_loop %>
 		<% end_if %>

@@ -4,6 +4,7 @@ Class Event extends DataObject implements PermissionProvider {
 	static $db = array(
 		'Visibility' => 'Enum("Public,Private","Public")',
 		'Title' => 'Varchar(255)',
+		'Type' => 'Enum("Meeting,WorkBreak,DayEvent,Birthday","Meeting")',
 		'Location' => 'Varchar(255)',
 		'Address' => 'Text',
 		'Phone' => 'Varchar(20)',
@@ -26,7 +27,8 @@ Class Event extends DataObject implements PermissionProvider {
 
 	function providePermissions() {
 		return array(
-			'VIEW_PRIVATE_EVENTS' => 'Can view private events'
+			'VIEW_PRIVATE_EVENTS' => 'Can view private events',
+			'MANAGE_EVENTS' => 'Can add/edit/delete events'
 		);
 	}
 
@@ -140,7 +142,7 @@ Class Event extends DataObject implements PermissionProvider {
 		return $e;
 	}
 
-	function canView() {
+	function canView($member = false) {
 		$vis = $this->Visibility;
 		if($vis == 'Public') {
 			return true;
@@ -151,14 +153,24 @@ Class Event extends DataObject implements PermissionProvider {
 		}
 	}
 
+	function canEdit($member = false) {
+		return Permission::check('MANAGE_EVENTS');
+	}
+
+	function canDelete($member = false) {
+		return Permission::check('MANAGE_EVENTS');
+	}
+
+	function canCreate($member = false) {
+		return Permission::check('MANAGE_EVENTS');
+	}
+
 	function getCMSFields() {
 		$f = parent::getCMSFields();
 		$f->removeByName('Source');
 		$f->removeByName('GoogleLink');
 		$f->removeByName('GoogleID');
 		$f->removeByName('URLSegment');
-		//$f->replaceField('StartTime',new DatePickerField('StartTime','Start Time'));
-		//$f->replaceField('EndTime',new DatePickerField('EndTime','End Time'));
 		return $f;
 	}//*/
 
