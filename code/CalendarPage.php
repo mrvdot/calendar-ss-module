@@ -60,10 +60,6 @@ class CalendarPage_Controller extends Page_Controller {
 					cpos = $content.offset();
 					$(\'#eventcalendar\').fullCalendar({
 						dayNamesShort: [\'S\', \'M\', \'T\', \'W\', \'T\', \'F\', \'S\'],
-						buttonText : {
-							prev: \'&nbsp;&nbsp;\',
-							next: \'|&nbsp;&nbsp;\'
-						},
 						events: "'.$this->AjaxEventsLink.'",
 						eventClick: function(event,js,view) {
 							pgY = js.pageY - js.clientY;
@@ -81,7 +77,7 @@ class CalendarPage_Controller extends Page_Controller {
 				})(jQuery);'
 				);
 		}
-		Requirements::css('calendar/css/CalendarPage.css');
+		//Requirements::css('calendar/css/CalendarPage.css');
 		parent::init();
 	}
 
