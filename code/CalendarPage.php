@@ -48,7 +48,7 @@ class CalendarPage_Controller extends Page_Controller {
 		if($this->DisplayType == 'Calendar') {
 			Requirements::css('calendar/css/fullcalendar.css');
 			Requirements::themedCSS('events');
-			Requirements::javascript('http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js');
+			Requirements::javascript('framework/thirdparty/jquery/jquery.js');
 			Requirements::javascript('calendar/javascript/fullcalendar.min.js');
 			Requirements::customScript(
 				'(function($) {
