@@ -47,19 +47,17 @@
 }
 
 #eventpopup span.close {
-	float:right;
 	cursor:pointer;
-	border-radius:1.5em;
-	-moz-border-radius:1.5em;
-	-webkit-border-radius:1.5em;
+	border-radius:1em;
+	-moz-border-radius:1em;
+	-webkit-border-radius:1em;
 	color:white;
 	text-align:center;
-	padding-top:.4em;
-	height:1.6em;
-	width:2em;
-	position:relative;
-	top:-30px;
-	left:30px;
+	padding:.5em;
+	width:1.5em;
+	position:absolute;
+	top:-16px;
+	right: -16px;
 	background:#9F0000;
 }
 
@@ -67,104 +65,7 @@ h2.title {
 	margin-bottom:1em;
 }
 
-.fc-header a, .fc-state-default, .fc-header span, .fc-widget-content {
-	border:none !important;
-}
-
-.fc-header {
-	border-bottom: 3px solid #BCB0A0;
-}
-
-.fc-header td, .fc-header th {
-	vertical-align:bottom;
-}
-
-.fc-header-title {
-	margin-bottom:.5em;
-	font-size:2em;
-	color:#464637;
-}
-
-.fc-button-prev span {
-	background:#56483f url(../images/prev.gif) no-repeat 15px !important;
-	height:37px !important;
-	width:38px;
-	padding:0 !important;
-	border-radius:6px 0em 0em 6px;
-	-moz-border-radius:6px 0 0 6px;
-	-webkit-border-radius:6px 0 0 6px;
-}
-
-.fc-button-next span {
-	background:#56483f url(../images/next.gif) no-repeat 15px !important;
-	height:27px !important;
-	width:42px;
-	padding:5px 0 !important;
-	color:#9b8b7b;
-	padding-left:-2px !important;
-	font-size:20px;
-	border-radius:0em 6px 6px 0em;
-	-moz-border-radius:0em 6px 6px 0em;
-	-webkit-border-radius:0em 6px 6px 0em;
-}
-
-.fc-content {
-	clear: none !important;
-}
-
 .fc-event.Past {
 	opacity:.7;
 	filter:alpha(opacity=70);
-}
-
-.fc-event a {
-	background:#9F0000;
-	text-transform:uppercase;
-	border:none !important;
-}
-
-.fc-event {
-	border:none !important;
-	background:#9F0000;
-	margin:0 5px;
-}
-
-.fc-event-title {
-	padding:5px;
-	display:block;
-}
-
-.fc-button-today {
-	text-transform:uppercase;
-	border:none !important;
-}
-
-.fc-button-today span {
-	background: #56483f !important;
-	padding:1em !important;
-	border-radius:6px;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-}
-
-.fc-button-today a {
-	color:white !important;
-	font-size:.8em;
-}
-
-.fc-content table td.fc-not-today {
-	background:#a9998a;
-}
-
-.fc-content .fc-today {
-	background: #D1CAC2;
-}
-
-.fc-content table {
-	border-collapse:separate;
-	border-spacing:5px;
-}
-
-.fc-content table td {
-	margin:-5px !important;
 }

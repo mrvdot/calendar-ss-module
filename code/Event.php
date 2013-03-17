@@ -56,11 +56,11 @@ Class Event extends DataObject implements PermissionProvider {
 		$url = $gUrl . '?start-min='.$today.'&orderby=starttime&sortorder=a';
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
-                curl_setopt($curl, CURLOPT_USERAGENT,
-                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($curl, CURLOPT_USERAGENT,
+    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 		$result = curl_exec($curl);
 		if(!$result) {
 			return false;
@@ -69,7 +69,6 @@ Class Event extends DataObject implements PermissionProvider {
 		$calendar = new SimpleXMLElement($result);
 		$entries = $calendar->entry;
 		if($source) {
-			print_r($entries);
 			return;
 		}
 		foreach($entries as $e) {
@@ -114,7 +113,7 @@ Class Event extends DataObject implements PermissionProvider {
 		return $events;
 	}
 
-	function get_dated_events($start = null, $end = null) {
+	static function get_dated_events($start = null, $end = null) {
 		if(!$start) {
 			$start = SS_Datetime::now()->Format('Y-m-d H:i:s');
 		}

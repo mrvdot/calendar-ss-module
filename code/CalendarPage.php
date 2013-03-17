@@ -52,8 +52,8 @@ class CalendarPage_Controller extends Page_Controller {
 			Requirements::javascript('calendar/javascript/fullcalendar.min.js');
 			Requirements::customScript(
 				'(function($) {
-					$content = $(\'#content\');
-					$eventPopup = $(\'<div id="eventpopup" style="display:none;"><span class="close">X</span><span id="eventinfo"></span></div>\').prependTo($content);
+					$content = $(\'#events\');
+					$eventPopup = $(\'<div id="eventpopup" style="display:none;"><span class="close">&times;</span><span id="eventinfo"></span></div>\').prependTo($content);
 					$eventPopup.children(\'span.close\').click(function() {
 						$eventPopup.fadeOut();
 					});
@@ -62,6 +62,7 @@ class CalendarPage_Controller extends Page_Controller {
 						dayNamesShort: [\'S\', \'M\', \'T\', \'W\', \'T\', \'F\', \'S\'],
 						events: "'.$this->AjaxEventsLink.'",
 						eventClick: function(event,js,view) {
+							console.log(event,js,view);
 							pgY = js.pageY - js.clientY;
 							if(cpos.top < pgY) {
 								popY = 75 + (pgY - cpos.top);
@@ -77,7 +78,7 @@ class CalendarPage_Controller extends Page_Controller {
 				})(jQuery);'
 				);
 		}
-		//Requirements::css('calendar/css/CalendarPage.css');
+		Requirements::css('calendar/css/CalendarPage.css');
 		parent::init();
 	}
 
