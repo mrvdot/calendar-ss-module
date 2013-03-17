@@ -54,8 +54,9 @@
 	color:white;
 	text-align:center;
 	padding:.5em;
-	width:1.5em;
+	width:1em;
 	position:absolute;
+	font-size: 1.5em;
 	top:-16px;
 	right: -16px;
 	background:#9F0000;
